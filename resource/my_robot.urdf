@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<robot name="robot1">
+    <webots>
+        <device reference="lidar" type="Lidar">
+            <ros>
+                <topicName>/robot1_lidar</topicName>
+                <alwaysOn>true</alwaysOn>
+            </ros>
+        </device>
+        <plugin type="tri_project.robot1_driver.Robot1Driver" />
+    </webots>
+</robot>
