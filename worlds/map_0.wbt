@@ -13,7 +13,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation 0.5866320897245207 -0.580859392497352 -0.5643271723504452 4.160701641741401
-  position 0.9820980643465658 1.4218874235481347 8.805263285545184
+  position 0.980505031550694 1.5829738859505982 12.960028457459014
 }
 TexturedBackground {
 }
@@ -1113,12 +1113,13 @@ Robot {
     }
     Lidar {
       translation 0 0 0.03
-      horizontalResolution 100
+      horizontalResolution 300
       fieldOfView 4.5
       numberOfLayers 1
       near 0.05
       minRange 0.05
-      maxRange 0.28
+      maxRange 0.35
+      defaultFrequency 20
     }
     Compass {
     }
@@ -2181,7 +2182,7 @@ Robot {
 }
 RectangleArena {
   translation 1.25 1.25 0
-  floorSize 2.5 2.5
+  floorSize 4 4
   floorTileSize 0.25 0.25
   floorAppearance Parquetry {
     type "light strip"

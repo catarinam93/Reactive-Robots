@@ -4,6 +4,8 @@ from geometry_msgs.msg import Twist, Point, TransformStamped
 from tf2_ros import StaticTransformBroadcaster
 import os
 from visualization_msgs.msg import Marker
+import time
+import csv
 
 HALF_DISTANCE_BETWEEN_WHEELS = 0.045
 WHEEL_RADIUS = 0.025
@@ -15,6 +17,7 @@ class Robot2Driver:
         self.__right_motor = self.__robot.getDevice('right wheel motor')
         self.__left_motor.setPosition(float('inf'))
         self.__right_motor.setPosition(float('inf'))
+        self.csv_file_path = os.path.join(os.path.expanduser("~"), "ros2_ws/src/tri_project/tri_project/robot2_log_data.csv")
 
         # ROS setup
         rclpy.init(args=None)
@@ -54,10 +57,28 @@ class Robot2Driver:
         # Path marker publisher
         self.path_pub = self.__node.create_publisher(Marker, 'robot2_path', 10)
 
+        # Open CSV file in append mode
+        self.open_csv_file()
+
+        # Register shutdown handler
+        self.__node.destroy_node = self.shutdown_callback
+    
+    def open_csv_file(self):
+        """Open the CSV file for writing data."""
+        try:
+            self.csv_file = open(self.csv_file_path, 'a', newline='')
+            self.csv_writer = csv.writer(self.csv_file)
+            if self.csv_file.tell() == 0:  # If file is empty, write headers
+                self.csv_writer.writerow(['Timestamp', 'Linear Velocity', 'Angular Velocity', 'Right Wheel Vel', 'Left Wheel Vel'])
+            self.__node.get_logger().info(f"CSV file opened at {self.csv_file_path}")
+        except Exception as e:
+            self.__node.get_logger().error(f"Failed to open CSV file: {e}")
+
+
     def __cmd_vel_callback(self, twist):
         """ Callback function to update target twist values """
         self.__target_twist = twist
-
+    
     def step(self):
         """ Called at each Webots step to update motor speeds """
         rclpy.spin_once(self.__node, timeout_sec=0)  # Process any incoming messages
@@ -76,6 +97,24 @@ class Robot2Driver:
         self.__left_motor.setVelocity(l_omega)
         self.__right_motor.setVelocity(r_omega)
 
+        # Throttle data logging by only writing every N seconds
+        LOG_INTERVAL = 0.0 
+
+        current_time = time.time()
+
+        if hasattr(self, 'last_log_time') and (current_time - self.last_log_time) < LOG_INTERVAL:
+            pass
+        else:
+            # Write data to CSV
+            try:
+                self.csv_writer.writerow([current_time, linear_vel, angular_vel, r_omega, l_omega])
+                self.csv_file.flush()  # Ensure data is written to disk
+            except Exception as e:
+                self.__node.get_logger().error(f"Error writing to CSV file: {e}")
+
+        self.last_log_time = current_time  # Update last log time
+
+
         # Publish robot position using GPS
         position = self.__gps.getValues()
 
@@ -93,3 +132,9 @@ class Robot2Driver:
 
         # Publish the updated path marker
         self.path_pub.publish(self.path_marker)
+
+    def shutdown_callback(self):
+        """Close CSV file when shutting down the node."""
+        if self.csv_file and not self.csv_file.closed:
+            self.csv_file.close()
+            self.__node.get_logger().info("CSV file closed safely.")

@@ -261,8 +261,14 @@ class Robot1Driver:
         # Subscribe to velocity command topic
         self.__node.create_subscription(Twist, 'robot1_cmd_vel', self.__cmd_vel_callback, 1)
 
+        package_dir = get_package_share_directory('tri_project')
+        sound_path = os.path.join(package_dir, 'music', 'sound_mono_16bit.wav')
+        self.__speaker = self.__robot.getDevice('speaker')
+        self.__speaker.playSound(self.__speaker, self.__speaker, sound_path, 1.0, 1.0, 0, False)
+
         # GPS setup
         self.__gps = self.__robot.getDevice('gps')
+        self.__node.get_logger().info(f"GPS enabled: {self.__gps}")
         self.__gps.enable(10)
 
         # Path marker setup

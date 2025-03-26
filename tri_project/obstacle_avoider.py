@@ -46,9 +46,9 @@ class ObstacleAvoider(Node):
         command_message.linear.x = 0.1
 
         # Turn if an obstacle is detected
-        if min_distance < 0.25 and min_distance > 0.155:
+        if min_distance > 0.25 and min_distance < 0.28:
             command_message.angular.z = angular_vel
-        if min_distance < 0.15 and index_min_sensor > 15 and index_min_sensor < 85:
+        if min_distance < 0.25 and index_min_sensor > 15 and index_min_sensor < 85:
             command_message.angular.z = -1 * angular_vel
         
 
