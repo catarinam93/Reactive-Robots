@@ -30,7 +30,12 @@ The robots were tested in two distinct maps to evaluate efficiency, robustness, 
 </p>
 
 ### Sensor Data Processing & Architecture
-![Sensor Data Processing](images/architecture/data_processing.png)
+<p float="left">
+  <img src="images/architecture/1.png" width="30%" />
+  <img src="images/architecture/2.png" width="30%" />
+  <img src="images/architecture/3.png" width="30%" />
+</p>
+
 
 ### Path Visualization & Experimental Results
 During execution, the robots' trajectories and velocity profiles are continuously monitored. The `robot_path_visualizer` dynamically draws the path of Robot 2 in Webots, while RViz Markers track the historical positions of the agents. Furthermore, the drivers log the linear velocity, angular velocity, and individual wheel speeds to CSV files for post-analysis.
@@ -47,7 +52,7 @@ The kinematics decoupling—where drivers translate high-level `cmd_vel` instruc
 
 Despite these limitations, the implemented sliding window search method for entity recognition and the real-time visualization tools (RViz and Webots path tracking) provided a robust framework for evaluating the swarm-like behaviors. Future improvements could involve fine-tuning the proportional gain factors for smoother turning, implementing temporary short-term memory to escape local minima, or adding basic state-machines to manage the transitions between wall-following and robot-following more elegantly.
 
-## Files
+## Main Files
 - **obstacle_avoider.py**: ROS 2 node for Robot 1. Subscribes to LIDAR data and publishes movement commands to follow walls and avoid collisions.
 - **obstacle_robot_avoider.py**: ROS 2 node for Robot 2. Contains dual logic to avoid walls and follow Robot 1 using a proportional controller based on LIDAR target detection.
 - **robot1_driver.py**: Driver node for Robot 1. Translates `cmd_vel` into wheel motor velocities using kinematics, publishes GPS path markers to RViz, and logs velocity data.
