@@ -63,4 +63,3 @@ Despite these limitations, the implemented sliding window search method for enti
 - **robot_path_visualizer.py**: Webots Supervisor script that subscribes to the robot's GPS position and dynamically draws its trajectory using an `IndexedLineSet`.
 - **robot1_log_data.csv**: Execution logs for Robot 1 containing timestamps, linear/angular velocities, and individual wheel speeds.
 - **robot2_log_data.csv**: Execution logs for Robot 2 containing timestamps, linear/angular velocities, and individual wheel speeds.
-- **Reactive Robots.pdf**: Presentation slides detailing the project's objectives, architecture, methodology, and results.
