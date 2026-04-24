@@ -22,11 +22,12 @@ Observations rely entirely on real-time sensors:
 * **GPS:** Used by the drivers and supervisors to extract positional data for logging and visualizing the robots' paths via RViz markers and Webots `IndexedLineSet`.
 
 ### Simulation Environments
-The robots were tested in two distinct maps to evaluate efficiency, robustness, and limitations of a memory-less architecture.
+The robots were tested in three distinct maps to evaluate efficiency, robustness, and limitations of a memory-less architecture.
 
 <p float="left">
   <img src="images/environments/main_environment.png" width="45%" />
-  <img src="images/environments/robustness_environment.png" width="45%" />
+  <img src="images/environments/robustness_environment1.png" width="45%" />
+  <img src="images/environments/robustness_environment2.png" width="45%" />
 </p>
 
 ### Sensor Data Processing & Architecture
@@ -40,8 +41,10 @@ The robots were tested in two distinct maps to evaluate efficiency, robustness, 
 ### Path Visualization & Experimental Results
 During execution, the robots' trajectories and velocity profiles are continuously monitored. The `robot_path_visualizer` dynamically draws the path of Robot 2 in Webots, while RViz Markers track the historical positions of the agents. Furthermore, the drivers log the linear velocity, angular velocity, and individual wheel speeds to CSV files for post-analysis.
 
-<p align="center">
-  <img src="images/results/path_visualization.png" width="60%" />
+<p align="left">
+  <img src="images/results/path_visualization1.png" width="60%" />
+  <img src="images/results/path_visualization2.png" width="60%" />
+  <img src="images/results/path_visualization3.png" width="60%" />
 </p>
 
 ### Conclusion
